@@ -1,4 +1,4 @@
-name: Sensor Data Pipeline
+name: data pipeline ci cd
 
 on:
   push:

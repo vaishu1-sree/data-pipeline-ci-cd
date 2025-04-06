@@ -16,29 +16,34 @@ jobs:
       - name: Check out the code
         uses: actions/checkout@v3
 
-      # Set up Python 3.12 (or another version like 3.11 if you want to try compatibility)
+      # Set up Python 3.12
       - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
           python-version: '3.12'  # You can change to '3.11' if needed
 
-      # Upgrade setuptools
+      # Upgrade pip to the latest version
+      - name: Upgrade pip
+        run: |
+          python -m pip install --upgrade pip
+
+      # Upgrade setuptools to the latest version
       - name: Upgrade setuptools
         run: |
           pip install --upgrade setuptools
 
-      # Install wheel (helps with building binary distributions)
+      # Install wheel to avoid build issues
       - name: Install wheel
         run: |
           pip install wheel
 
-      # Install numpy (this will try installing the precompiled binary or source)
+      # Install numpy (try installing the precompiled binary first)
       - name: Install NumPy
         run: |
-          pip install numpy==1.23.5  # Install the specific version of NumPy
+          pip install numpy==1.23.5 --only-binary :all:  # Attempt to install a precompiled binary
 
-      # Additional steps as needed, for example running tests
+      # Additional steps if you want to run tests
       - name: Run tests
         run: |
-          # Example of running tests if you have pytest or similar testing framework
+          # Example of running tests (adjust based on your testing framework)
           pytest

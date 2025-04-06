@@ -24,7 +24,8 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install --upgrade setuptools wheel  # Ensure setuptools is updated
+        pip install -r requirements.txt --no-use-pep517  # Add --no-use-pep517 to bypass build issues
 
     - name: Verify Python Version
       run: python --version
@@ -53,7 +54,8 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install --upgrade setuptools wheel  # Ensure setuptools is updated
+        pip install -r requirements.txt --no-use-pep517  # Add --no-use-pep517 to bypass build issues
 
     - name: Install pywinpty
       run: |

@@ -37,13 +37,17 @@ jobs:
         run: |
           pip install wheel
 
-      # Install latest compatible version of NumPy
+      # Install NumPy (latest compatible version)
       - name: Install NumPy (latest compatible version)
         run: |
           pip install numpy --upgrade
 
-      # Additional steps if you want to run tests
+      # Install pytest for running tests
+      - name: Install pytest
+        run: |
+          pip install pytest
+
+      # Run tests using pytest
       - name: Run tests
         run: |
-          # Example of running tests (adjust based on your testing framework)
-          pytest
+          pytest  # You can also add options like `--maxfail=1` or `--disable-warnings` if needed

@@ -1,0 +1,35 @@
+name: Sensor Data Pipeline
+
+on:
+  push:
+    paths:
+      - 'notebooks/**'
+      - 'input_data/**'
+      - 'requirements.txt'
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Notebooks
+      run: |
+        pip install papermill
+        papermill notebooks/1_quality_check.ipynb notebooks/out1.ipynb
+        papermill notebooks/2_preprocessing.ipynb notebooks/out2.ipynb
+        papermill notebooks/3_feature_extraction.ipynb notebooks/out3.ipynb
+        papermill notebooks/4_anomaly_detection.ipynb notebooks/out4.ipynb
+        papermill notebooks/5_save_results.ipynb notebooks/out5.ipynb

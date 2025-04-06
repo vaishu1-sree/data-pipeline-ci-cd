@@ -10,44 +10,26 @@ on:
 
 jobs:
   install-dependencies:
-    runs-on: ubuntu-latest  # Or use your preferred OS environment
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check out the code
         uses: actions/checkout@v3
 
-      # Set up Python 3.12
       - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'  # You can change to '3.11' if needed
+          python-version: '3.12'
 
-      # Upgrade pip to the latest version
-      - name: Upgrade pip
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          pip install pandas numpy pytest
 
-      # Upgrade setuptools to the latest version
-      - name: Upgrade setuptools
+      - name: Generate synthetic data
         run: |
-          pip install --upgrade setuptools
+          python generate_synthetic_data.py  # Make sure this script exists
 
-      # Install wheel to avoid build issues
-      - name: Install wheel
-        run: |
-          pip install wheel
-
-      # Install NumPy (latest compatible version)
-      - name: Install NumPy (latest compatible version)
-        run: |
-          pip install numpy --upgrade
-
-      # Install pytest for running tests
-      - name: Install pytest
-        run: |
-          pip install pytest
-
-      # Run tests using pytest
       - name: Run tests
         run: |
-          pytest  # You can also add options like `--maxfail=1` or `--disable-warnings` if needed
+          pytest tests/  # Run tests from the 'tests' directory

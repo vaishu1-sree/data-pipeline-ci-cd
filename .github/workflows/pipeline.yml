@@ -32,4 +32,4 @@ jobs:
 
       - name: Run Quality Check
         run: |
-          python notebooks/1_quality_check.py  # Ensure you are using the correct file
+          python notebooks/1_quality_check.ipynb  # Ensure you are using the correct file

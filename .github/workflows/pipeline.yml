@@ -25,6 +25,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Verify Python Version
+      run: python --version  # This will print Python version in the log
+    
     - name: Run Notebooks
       run: |
         pip install papermill

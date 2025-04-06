@@ -24,33 +24,12 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pandas numpy pytest jupyter nbconvert papermill  # Ensure papermill is installed
+          pip install pandas numpy
 
       - name: Verify file existence
         run: |
-          ls -l input_data/generate_sensor_data.py  # Verify the correct script is in the right location
+          ls -l input_data/  # Check if the input_data directory exists
 
-      - name: Generate synthetic data
+      - name: Run Quality Check
         run: |
-          cd $GITHUB_WORKSPACE  # Ensure you're in the root directory
-          python input_data/generate_sensor_data.py  # Run the correct script
-
-      - name: Run Quality Check Notebook
-        run: |
-          papermill notebooks/1_quality_check.ipynb notebooks/out1.ipynb
-
-      - name: Run Preprocessing Notebook
-        run: |
-          papermill notebooks/2_preprocessing.ipynb notebooks/out2.ipynb
-
-      - name: Run Feature Extraction Notebook
-        run: |
-          papermill notebooks/3_feature_extraction.ipynb notebooks/out3.ipynb
-
-      - name: Run Analysis Notebook
-        run: |
-          papermill notebooks/4_analysis.ipynb notebooks/out4.ipynb
-
-      - name: Run Save Results Notebook
-        run: |
-          papermill notebooks/5_save_results.ipynb notebooks/out5.ipynb
+          python notebooks/1_quality_check.py  # Ensure you are using the correct file

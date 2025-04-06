@@ -1,32 +1,56 @@
-name: Data Pipeline CI/CD
+name: CI Workflow
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  run_quality_check:
+  install-dependencies:
     runs-on: ubuntu-latest
+
     steps:
-      # Checkout the repository
-      - name: Checkout Repository
+      - name: Check out the code
         uses: actions/checkout@v3
-      
-      # Set up Python environment
+
       - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: 3.12
+          python-version: '3.12'
 
-      # Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install jupyter nbconvert  # Install dependencies for running notebooks
+          pip install pandas numpy pytest jupyter nbconvert papermill  # Ensure papermill is installed
 
-      # Run the Quality Check Notebook (Step 1)
+      - name: Verify file existence
+        run: |
+          ls -l input_data/generate_sensor_data.py  # Verify the correct script is in the right location
+
+      - name: Generate synthetic data
+        run: |
+          cd $GITHUB_WORKSPACE  # Ensure you're in the root directory
+          python input_data/generate_sensor_data.py  # Run the correct script
+
       - name: Run Quality Check Notebook
         run: |
-          jupyter nbconvert --to notebook --execute notebooks/1_quality_check.ipynb --output output_notebooks/1_quality_check_output.ipynb
+          papermill notebooks/1_quality_check.ipynb notebooks/out1.ipynb
+
+      - name: Run Preprocessing Notebook
+        run: |
+          papermill notebooks/2_preprocessing.ipynb notebooks/out2.ipynb
+
+      - name: Run Feature Extraction Notebook
+        run: |
+          papermill notebooks/3_feature_extraction.ipynb notebooks/out3.ipynb
+
+      - name: Run Analysis Notebook
+        run: |
+          papermill notebooks/4_analysis.ipynb notebooks/out4.ipynb
+
+      - name: Run Save Results Notebook
+        run: |
+          papermill notebooks/5_save_results.ipynb notebooks/out5.ipynb

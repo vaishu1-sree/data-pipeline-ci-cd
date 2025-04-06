@@ -28,7 +28,7 @@ jobs:
 
       - name: Generate synthetic data
         run: |
-          python input_data/generate_synthetic_data.py  # Correct path to the script
+          python input_data/generate_sensor_data.py  # Correct path to the script
 
       - name: Run tests
         run: |

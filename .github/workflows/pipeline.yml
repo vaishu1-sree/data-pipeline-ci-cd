@@ -24,11 +24,36 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pandas numpy pytest
+          pip install pandas numpy pytest jupyter nbconvert
+
+      - name: Verify file existence
+        run: |
+          ls -l input_data/generate_sensor_data.py  # Verify the correct script is in the right location
 
       - name: Generate synthetic data
         run: |
-          python input_data/generate_sensor_data.py  # Correct path to the script
+          cd $GITHUB_WORKSPACE  # Ensure you're in the root directory
+          python input_data/generate_sensor_data.py  # Run the correct script
+
+      - name: Run Quality Check Notebook
+        run: |
+          jupyter nbconvert --execute --to notebook --inplace notebooks/1_quality_check.ipynb
+
+      - name: Run Preprocessing Notebook
+        run: |
+          jupyter nbconvert --execute --to notebook --inplace notebooks/2_preprocessing.ipynb
+
+      - name: Run Feature Extraction Notebook
+        run: |
+          jupyter nbconvert --execute --to notebook --inplace notebooks/3_feature_extraction.ipynb
+
+      - name: Run Anomaly Detection Notebook
+        run: |
+          jupyter nbconvert --execute --to notebook --inplace notebooks/4_anomaly_detection.ipynb
+
+      - name: Run Save Results Notebook
+        run: |
+          jupyter nbconvert --execute --to notebook --inplace notebooks/5_save_results.ipynb
 
       - name: Run tests
         run: |

@@ -9,7 +9,7 @@ on:
 
 jobs:
   run-pipeline:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Change this if needed to 'windows-latest' for Windows runners
 
     steps:
     - name: Checkout Code
@@ -27,11 +27,12 @@ jobs:
 
     - name: Verify Python Version
       run: python --version  # This will print Python version in the log
-          # Install pywin32 only on Windows
+
+    # Install pywin32 only on Windows
     - name: Install pywin32 on Windows
-      if: runner.os == 'Windows'
+      if: runner.os == 'Windows'  # This condition ensures it runs only on Windows
       run: |
-          pip install pywin32==306
+        pip install pywin32==306
 
     - name: Run Notebooks
       run: |

@@ -37,10 +37,10 @@ jobs:
         run: |
           pip install wheel
 
-      # Install numpy (try installing the precompiled binary first)
-      - name: Install NumPy
+      # Install latest compatible version of NumPy
+      - name: Install NumPy (latest compatible version)
         run: |
-          pip install numpy==1.23.5 --only-binary :all:  # Attempt to install a precompiled binary
+          pip install numpy --upgrade
 
       # Additional steps if you want to run tests
       - name: Run tests

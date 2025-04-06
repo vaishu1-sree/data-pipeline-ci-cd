@@ -27,7 +27,7 @@ jobs:
         python -m pip install --upgrade setuptools==59.5.0  # Pin setuptools to 59.5.0
 
     - name: Install NumPy (binary only)
-      run: pip install numpy==1.23.5 --only-binary :all:  # Install precompiled binary of NumPy
+      run: pip install numpy==1.23.5
 
     - name: Install Dependencies
       run: pip install -r requirements.txt

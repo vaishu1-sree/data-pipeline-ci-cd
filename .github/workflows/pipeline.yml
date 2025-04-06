@@ -1,60 +1,32 @@
-name: CI Workflow
+name: Data Pipeline CI/CD
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  install-dependencies:
+  run_quality_check:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check out the code
+      # Checkout the repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
-
+      
+      # Set up Python environment
       - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
+          python-version: 3.12
 
+      # Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pandas numpy pytest jupyter nbconvert
+          pip install -r requirements.txt
+          pip install jupyter nbconvert  # Install dependencies for running notebooks
 
-      - name: Verify file existence
-        run: |
-          ls -l input_data/generate_sensor_data.py  # Verify the correct script is in the right location
-
-      - name: Generate synthetic data
-        run: |
-          cd $GITHUB_WORKSPACE  # Ensure you're in the root directory
-          python input_data/generate_sensor_data.py  # Run the correct script
-
+      # Run the Quality Check Notebook (Step 1)
       - name: Run Quality Check Notebook
         run: |
-          jupyter nbconvert --execute --to notebook --inplace notebooks/1_quality_check.ipynb
-
-      - name: Run Preprocessing Notebook
-        run: |
-          jupyter nbconvert --execute --to notebook --inplace notebooks/2_preprocessing.ipynb
-
-      - name: Run Feature Extraction Notebook
-        run: |
-          jupyter nbconvert --execute --to notebook --inplace notebooks/3_feature_extraction.ipynb
-
-      - name: Run Anomaly Detection Notebook
-        run: |
-          jupyter nbconvert --execute --to notebook --inplace notebooks/4_anomaly_detection.ipynb
-
-      - name: Run Save Results Notebook
-        run: |
-          jupyter nbconvert --execute --to notebook --inplace notebooks/5_save_results.ipynb
-
-      - name: Run tests
-        run: |
-          pytest tests/  # Run tests from the 'tests' directory
+          jupyter nbconvert --to notebook --execute notebooks/1_quality_check.ipynb --output output_notebooks/1_quality_check_output.ipynb

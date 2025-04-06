@@ -18,3 +18,4 @@ for i in range(10):
     df.to_csv(f'input_data/sensor_data_{i}.csv', index=False)
 
 print("✅ Synthetic sensor data created.")
+

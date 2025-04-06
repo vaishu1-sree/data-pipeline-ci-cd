@@ -9,7 +9,7 @@ on:
 
 jobs:
   run-pipeline:
-    runs-on: ubuntu-latest  # or 'windows-latest' depending on the runner you're using
+    runs-on: ubuntu-latest  # Change this to 'windows-latest' if needed
 
     steps:
     - name: Checkout Code
@@ -20,17 +20,15 @@ jobs:
       with:
         python-version: '3.12'
 
-    - name: Install Dependencies (for Linux/Ubuntu)
-      if: runner.os != 'Windows'  # Install on non-Windows environments
+    - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Install Dependencies (for Windows)
-      if: runner.os == 'Windows'  # Install on Windows environment
+    - name: Install pywinpty on Windows Only
+      if: runner.os == 'Windows'  # Only install pywinpty on Windows environments
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt  # This will install pywinpty as well on Windows
+        pip install pywinpty
 
     - name: Verify Python Version
       run: python --version  # This will print Python version in the log

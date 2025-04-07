@@ -1,4 +1,4 @@
-name: CIcd Workflow
+name: CI Workflow
 
 on:
   push:
@@ -43,5 +43,10 @@ jobs:
         run: |
           jupyter nbconvert --to notebook --inplace --execute notebooks/3_feature_extraction.ipynb
 
+      - name: Run Notebook 4 - Anomaly Detection
+        run: |
+          jupyter nbconvert --to notebook --inplace --execute notebooks/4_anomaly_detection.ipynb
 
-
+      - name: Run Notebook 5 - Save Results
+        run: |
+          jupyter nbconvert --to notebook --inplace --execute notebooks/5_save_results.ipynb

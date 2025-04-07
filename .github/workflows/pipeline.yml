@@ -2,21 +2,19 @@ name: CI Workflow
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   run-pipeline:
     runs-on: ubuntu-latest
 
     steps:
-      - name: ⬇️ Checkout code
+      - name: 🔄 Checkout repository
         uses: actions/checkout@v3
 
-      - name: 🐍 Set up Python
+      - name: 🐍 Set up Python 3.12
         uses: actions/setup-python@v4
         with:
           python-version: '3.12'
@@ -26,27 +24,26 @@ jobs:
           python -m pip install --upgrade pip
           pip install pandas numpy
 
-      - name: 📁 Check input_data files
-        run: |
-          ls -l input_data || echo "input_data folder not found!"
+      - name: 📁 List input files
+        run: ls -R input_data/
 
-      - name: ✅ Run 1_quality_check.py
+      - name: ✅ Step 1 - Quality Check
         run: python notebooks/1_quality_check.py
 
-      - name: 🧹 Run 2_preprocess.py
-        run: python notebooks/2_preprocess.py
+      - name: 🧹 Step 2 - Preprocessing
+        run: python notebooks/2_preprocessing.py
 
-      - name: 📊 Run 3_feature_engineering.py
-        run: python notebooks/3_feature_engineering.py
+      - name: 📊 Step 3 - Feature Extraction
+        run: python notebooks/3_feature_extraction.py
 
-      - name: 🚨 Run 4_detect_anomalies.py
-        run: python notebooks/4_detect_anomalies.py
+      - name: 🚨 Step 4 - Anomaly Detection
+        run: python notebooks/4_anomaly_detection.py
 
-      - name: 💾 Run 5_save_results.py
+      - name: 💾 Step 5 - Save Result Summary
         run: python notebooks/5_save_results.py
 
       - name: 📤 Upload processed output_data
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: processed-output
           path: output_data/

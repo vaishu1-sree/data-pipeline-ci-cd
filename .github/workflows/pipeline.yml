@@ -10,10 +10,23 @@ jobs:
     runs-on: [self-hosted, windows]  # Run this job on the self-hosted runner with Windows
 
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Run each notebook for the respective steps
+      # Step 2: Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      # Step 3: Install Jupyter and dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install jupyter pandas numpy  # Install jupyter and any other dependencies you need
+
+      # Step 4: Run each Jupyter notebook for the respective steps
       - name: Run Notebook 1 - Quality Check
         run: |
           jupyter nbconvert --to notebook --inplace --execute notebooks/1_quality_check.ipynb
@@ -34,16 +47,16 @@ jobs:
         run: |
           jupyter nbconvert --to notebook --inplace --execute notebooks/5_save_results.ipynb
 
-      # Save processed data locally to the directory in your local machine
+      # Step 5: Save processed data locally to the directory in your local machine
       - name: Save Processed Data Locally
         run: |
           echo "Saving files locally to C:/Pipeline/sensor-pipeline/data-pipeline-ci-cd/output_data"
           # Move files from the workflow output to the local directory on your machine
-          mv output_data/clean/* C:/Pipeline/sensor-pipeline/data-pipeline-ci-cd/output_data/clean/
-          mv output_data/corrupted/* C:/Pipeline/sensor-pipeline/data-pipeline-ci-cd/output_data/corrupted/
+          move output_data/clean/* C:/Pipeline/sensor-pipeline/data-pipeline-ci-cd/output_data/clean/
+          move output_data/corrupted/* C:/Pipeline/sensor-pipeline/data-pipeline-ci-cd/output_data/corrupted/
           echo "Files saved locally"
 
-      # Optionally, commit and push to GitHub from the local repository (manual step later)
+      # Step 6: Optionally, commit and push to GitHub from the local repository (manual step later)
       - name: Commit and Push Locally
         run: |
           git config --global user.name "Your Name"

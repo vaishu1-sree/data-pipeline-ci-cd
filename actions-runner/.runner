@@ -1,0 +1,9 @@
+﻿{
+  "agentId": 21,
+  "agentName": "windows",
+  "poolId": 1,
+  "poolName": "Default",
+  "serverUrl": "https://pipelinesghubeus3.actions.githubusercontent.com/Ag462KY6NVPWtJkkLji9Y1lWVu9wIOdjtQXCwX7TkMFcZqSJiR/",
+  "gitHubUrl": "https://github.com/vaishu1-sree/data-pipeline-ci-cd",
+  "workFolder": "data-pipeline-ci-cd"
+}

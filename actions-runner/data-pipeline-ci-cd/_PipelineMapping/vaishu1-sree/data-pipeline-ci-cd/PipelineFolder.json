@@ -1,0 +1,12 @@
+﻿{
+  "repositoryName": "vaishu1-sree/data-pipeline-ci-cd",
+  "pipelineDirectory": "data-pipeline-ci-cd",
+  "workspaceDirectory": "data-pipeline-ci-cd\\data-pipeline-ci-cd",
+  "repositories": {
+    "vaishu1-sree/data-pipeline-ci-cd": {
+      "repositoryPath": "data-pipeline-ci-cd\\data-pipeline-ci-cd",
+      "lastRunOn": "04/07/2025 19:10:51 +02:00"
+    }
+  },
+  "lastRunOn": "04/07/2025 19:12:28 +02:00"
+}

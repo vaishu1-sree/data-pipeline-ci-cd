@@ -1,39 +1,56 @@
-name: CI Workflow
+name: CI Pipeline
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   run-pipeline:
-    runs-on: ubuntu-latest  # ← Use stable runner
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: 📥 Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: 🐍 Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.12'
 
-      - name: Install dependencies
+      - name: 📦 Install Dependencies
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install pandas numpy jupyter
 
-      - name: Run all notebooks
-        run: |
-          jupyter nbconvert --to notebook --inplace --execute notebooks/1_quality_check.ipynb
-          jupyter nbconvert --to notebook --inplace --execute notebooks/2_preprocessing.ipynb
-          jupyter nbconvert --to notebook --inplace --execute notebooks/3_feature_extraction.ipynb
-          jupyter nbconvert --to notebook --inplace --execute notebooks/4_anomaly_detection.ipynb
-          jupyter nbconvert --to notebook --inplace --execute notebooks/5_save_results.ipynb
+      - name: 🧪 Run Notebook 1 - Quality Check
+        run: jupyter nbconvert --to notebook --inplace --execute notebooks/1_quality_check.ipynb
 
-      - name: Upload processed files
-        uses: actions/upload-artifact@v3
-        with:
-          name: output-data
-          path: output_data/
+      - name: ✨ Run Notebook 2 - Preprocessing
+        run: jupyter nbconvert --to notebook --inplace --execute notebooks/2_preprocessing.ipynb
+
+      - name: 🧠 Run Notebook 3 - Feature Extraction
+        run: jupyter nbconvert --to notebook --inplace --execute notebooks/3_feature_extraction.ipynb
+
+      - name: 🚨 Run Notebook 4 - Anomaly Detection
+        run: jupyter nbconvert --to notebook --inplace --execute notebooks/4_anomaly_detection.ipynb
+
+      - name: 💾 Run Notebook 5 - Save Results
+        run: jupyter nbconvert --to notebook --inplace --execute notebooks/5_save_results.ipynb
+
+      - name: 🚀 Commit & Push Output Files to `data-outputs` Branch
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Create branch if not exists
+          git fetch origin data-outputs || true
+          git checkout -B data-outputs
+
+          # Add output files
+          git add output_data/
+          git commit -m "🔁 Update processed output data [CI]"
+          git push origin data-outputs --force

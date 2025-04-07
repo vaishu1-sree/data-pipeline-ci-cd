@@ -13,40 +13,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out the code
+      - name: ⬇️ Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python 3.12
+      - name: 🐍 Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.12'
 
-      - name: Install dependencies
+      - name: 📦 Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pandas numpy jupyter
+          pip install pandas numpy
 
-      - name: Verify file existence
+      - name: 📁 Check input_data files
         run: |
-          ls -l input_data/
-          ls -l notebooks/
+          ls -l input_data || echo "input_data folder not found!"
 
-      - name: Run Notebook 1 - Quality Check
-        run: |
-          jupyter nbconvert --to notebook --inplace --execute notebooks/1_quality_check.ipynb
+      - name: ✅ Run 1_quality_check.py
+        run: python notebooks/1_quality_check.py
 
-      - name: Run Notebook 2 - Preprocessing
-        run: |
-          jupyter nbconvert --to notebook --inplace --execute notebooks/2_preprocessing.ipynb
+      - name: 🧹 Run 2_preprocess.py
+        run: python notebooks/2_preprocess.py
 
-      - name: Run Notebook 3 - Feature Extraction
-        run: |
-          jupyter nbconvert --to notebook --inplace --execute notebooks/3_feature_extraction.ipynb
+      - name: 📊 Run 3_feature_engineering.py
+        run: python notebooks/3_feature_engineering.py
 
-      - name: Run Notebook 4 - Anomaly Detection
-        run: |
-          jupyter nbconvert --to notebook --inplace --execute notebooks/4_anomaly_detection.ipynb
+      - name: 🚨 Run 4_detect_anomalies.py
+        run: python notebooks/4_detect_anomalies.py
 
-      - name: Run Notebook 5 - Save Results
-        run: |
-          jupyter nbconvert --to notebook --inplace --execute notebooks/5_save_results.ipynb
+      - name: 💾 Run 5_save_results.py
+        run: python notebooks/5_save_results.py
+
+      - name: 📤 Upload processed output_data
+        uses: actions/upload-artifact@v3
+        with:
+          name: processed-output
+          path: output_data/

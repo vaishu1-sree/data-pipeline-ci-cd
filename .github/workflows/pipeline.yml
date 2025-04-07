@@ -1,4 +1,4 @@
-name: CICD Workflow
+name: CI Workflow
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  install-dependencies:
+  run-pipeline:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,9 +28,25 @@ jobs:
 
       - name: Verify file existence
         run: |
-          ls -l input_data/  # Check if the input_data directory exists
-          ls -l notebooks/   # Check if the notebook exists
+          ls -l input_data/
+          ls -l notebooks/
 
-      - name: Run Quality Check Notebook
+      - name: Run Notebook 1 - Quality Check
         run: |
-          jupyter nbconvert --execute --to notebook --inplace notebooks/1_quality_check.ipynb
+          jupyter nbconvert --to notebook --inplace --execute notebooks/1_quality_check.ipynb
+
+      - name: Run Notebook 2 - Preprocessing
+        run: |
+          jupyter nbconvert --to notebook --inplace --execute notebooks/2_preprocessing.ipynb
+
+      - name: Run Notebook 3 - Feature Extraction
+        run: |
+          jupyter nbconvert --to notebook --inplace --execute notebooks/3_feature_extraction.ipynb
+
+      - name: Run Notebook 4 - Anomaly Detection
+        run: |
+          jupyter nbconvert --to notebook --inplace --execute notebooks/4_anomaly_detection.ipynb
+
+      - name: Run Notebook 5 - Save Results
+        run: |
+          jupyter nbconvert --to notebook --inplace --execute notebooks/5_save_results.ipynb

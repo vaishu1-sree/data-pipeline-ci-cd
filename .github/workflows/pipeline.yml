@@ -38,15 +38,3 @@ jobs:
       - name: Run Notebook 2 - Preprocessing
         run: |
           jupyter nbconvert --to notebook --inplace --execute notebooks/2_preprocessing.ipynb
-
-      - name: Run Notebook 3 - Feature Extraction
-        run: |
-          jupyter nbconvert --to notebook --inplace --execute notebooks/3_feature_extraction.ipynb
-
-      - name: Run Notebook 4 - Anomaly Detection
-        run: |
-          jupyter nbconvert --to notebook --inplace --execute notebooks/4_anomaly_detection.ipynb
-
-      - name: Run Notebook 5 - Save Results
-        run: |
-          jupyter nbconvert --to notebook --inplace --execute notebooks/5_save_results.ipynb

@@ -53,4 +53,6 @@ jobs:
           # Add output files
           git add output_data/
           git commit -m "🔁 Update processed output data [CI]"
-          git push origin data-outputs --force
+
+          # Push to remote using the GH_TOKEN for authentication
+          git push https://github-actions:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }} data-outputs --force

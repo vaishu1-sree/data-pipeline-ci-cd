@@ -24,12 +24,13 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pandas numpy
+          pip install pandas numpy jupyter
 
       - name: Verify file existence
         run: |
           ls -l input_data/  # Check if the input_data directory exists
+          ls -l notebooks/   # Check if the notebook exists
 
-      - name: Run Quality Check
+      - name: Run Quality Check Notebook
         run: |
-          python notebooks/1_quality_check.ipynb  # Ensure you are using the correct file
+          jupyter nbconvert --execute --to notebook --inplace notebooks/1_quality_check.ipynb

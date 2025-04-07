@@ -8,42 +8,32 @@ on:
 
 jobs:
   run-pipeline:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # ← Use stable runner
 
     steps:
-      - name: 🔄 Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: 🐍 Set up Python 3.12
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.12'
 
-      - name: 📦 Install dependencies
+      - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
+          pip install --upgrade pip
           pip install pandas numpy jupyter
 
-      - name: 🗂️ List input files
-        run: ls -R input_data/
+      - name: Run all notebooks
+        run: |
+          jupyter nbconvert --to notebook --inplace --execute notebooks/1_quality_check.ipynb
+          jupyter nbconvert --to notebook --inplace --execute notebooks/2_preprocessing.ipynb
+          jupyter nbconvert --to notebook --inplace --execute notebooks/3_feature_extraction.ipynb
+          jupyter nbconvert --to notebook --inplace --execute notebooks/4_anomaly_detection.ipynb
+          jupyter nbconvert --to notebook --inplace --execute notebooks/5_save_results.ipynb
 
-      - name: ▶️ Run Notebook 1 - Quality Check
-        run: jupyter nbconvert --to notebook --inplace --execute notebooks/1_quality_check.ipynb
-
-      - name: ▶️ Run Notebook 2 - Preprocessing
-        run: jupyter nbconvert --to notebook --inplace --execute notebooks/2_preprocessing.ipynb
-
-      - name: ▶️ Run Notebook 3 - Feature Extraction
-        run: jupyter nbconvert --to notebook --inplace --execute notebooks/3_feature_extraction.ipynb
-
-      - name: ▶️ Run Notebook 4 - Anomaly Detection
-        run: jupyter nbconvert --to notebook --inplace --execute notebooks/4_anomaly_detection.ipynb
-
-      - name: ▶️ Run Notebook 5 - Save Results
-        run: jupyter nbconvert --to notebook --inplace --execute notebooks/5_save_results.ipynb
-
-      - name: 📤 Upload processed output_data
+      - name: Upload processed files
         uses: actions/upload-artifact@v3
         with:
-          name: processed-output
+          name: output-data
           path: output_data/

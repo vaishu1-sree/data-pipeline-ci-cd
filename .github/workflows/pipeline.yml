@@ -38,3 +38,10 @@ jobs:
       - name: Run Notebook 2 - Preprocessing
         run: |
           jupyter nbconvert --to notebook --inplace --execute notebooks/2_preprocessing.ipynb
+
+      - name: Run Notebook 3 - Feature Extraction
+        run: |
+          jupyter nbconvert --to notebook --inplace --execute notebooks/3_feature_extraction.ipynb
+
+
+

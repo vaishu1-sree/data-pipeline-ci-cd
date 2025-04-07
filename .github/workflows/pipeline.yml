@@ -22,28 +22,33 @@ jobs:
       - name: 📦 Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pandas numpy
+          pip install pandas numpy jupyter
 
-      - name: 📁 List input files
+      - name: 🗂️ List input files
         run: ls -R input_data/
 
-      - name: ✅ Step 1 - Quality Check
-        run: python notebooks/1_quality_check.py
+      - name: ▶️ Run Notebook 1 - Quality Check
+        run: |
+          jupyter nbconvert --to notebook --inplace --execute notebooks/1_quality_check.ipynb
 
-      - name: 🧹 Step 2 - Preprocessing
-        run: python notebooks/2_preprocessing.py
+      - name: ▶️ Run Notebook 2 - Preprocessing
+        run: |
+          jupyter nbconvert --to notebook --inplace --execute notebooks/2_preprocessing.ipynb
 
-      - name: 📊 Step 3 - Feature Extraction
-        run: python notebooks/3_feature_extraction.py
+      - name: ▶️ Run Notebook 3 - Feature Extraction
+        run: |
+          jupyter nbconvert --to notebook --inplace --execute notebooks/3_feature_extraction.ipynb
 
-      - name: 🚨 Step 4 - Anomaly Detection
-        run: python notebooks/4_anomaly_detection.py
+      - name: ▶️ Run Notebook 4 - Anomaly Detection
+        run: |
+          jupyter nbconvert --to notebook --inplace --execute notebooks/4_anomaly_detection.ipynb
 
-      - name: 💾 Step 5 - Save Result Summary
-        run: python notebooks/5_save_results.py
+      - name: ▶️ Run Notebook 5 - Save Results
+        run: |
+          jupyter nbconvert --to notebook --inplace --execute notebooks/5_save_results.ipynb
 
       - name: 📤 Upload processed output_data
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: processed-output
           path: output_data/
